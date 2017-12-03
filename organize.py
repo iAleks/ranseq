@@ -1,4 +1,4 @@
-nimport csv
+import csv
 import numpy as np
 import os.path
 from scipy.misc import imsave
