@@ -13,13 +13,6 @@ def shorten(name):
 
 
 unique_file = 'labels_unique.txt';
-G = 20499
-n = 160
-N = n*n
-# nGenes = 10
-
-root_dir = 'profile_images'
-mkdir(root_dir)
 
 with open(unique_file,'r') as f:
     reader = csv.reader(f,delimiter='\t')
@@ -37,18 +30,9 @@ nParts = 43 # hardcode this for now
 
 cat_counts = np.zeros(nCats)
 print cat_counts
-# for ind in range(nUniques):
-#     name = names[ind]
-#     # out_dir = '%s/%s' % (root_dir, name)
 
 for part in range(nParts):
     print 'reading part %d/%d' % (part, nParts-1)
-    # covars_file = 'covars_all/part%02d' % part
-    # with open(covars_file,'r') as f:
-    #     reader = csv.reader(f,delimiter='\t')
-    #     genes = list(reader)
-    #     nGenes = len(genes)
-    #     print 'found %d genes' % nGenes
     labels_file = 'labels_all/part%02d' % part
     with open(labels_file,'r') as f:
         reader = csv.reader(f,delimiter='\t')
@@ -72,41 +56,7 @@ for part in range(nParts):
         cat_counts[cat_ind] += 1
         print cat_counts
     print '-'*100
-    # raw_input()
-
-        # if label==name:
-        #     # if count < maxPngs
-        #     gene = genes[ind]
-        #     gene = np.asarray(gene).astype(np.float32)
-        #     # print 'gene %d; type %s' % (ind, label)
-        #     count += 1
-    # print 'found %d gene profiles with the name %s' % (count, name)
-        
-# for ind in range(1,nGenes): # start at 1 to skip header
-#     gene = genes[ind]
-#     gene = np.asarray(gene).astype(np.float32)
-#     label = labels[ind][0]
-#     print label
-#     print '-'*100
-#     print 'gene %d; type %s' % (ind, label)
-    
-#     gene = gene + 1
-#     gene = np.log(gene)
-#     print np.amax(gene)
-#     print np.mean(gene)
-#     print np.median(gene)
-#     print np.amin(gene)
-
-#     gene = np.pad(gene, (0, N-G), 'constant')
-#     gene = np.reshape(gene, [n, n])
-
-    
-#     imsave('%04d.png' % ind, gene)
-#     # hist, bin_edges = np.histogram(gene, density=True)
-#     # print hist
-#     # print bin_edges
-
-#     # plt.hist(gene, bins=20)
-#     # plt.title('hist')
-#     # plt.show()
-#     # raw_input()
+data_dir = 'data'
+mkdir(data_dir)    
+np.save('%s/cat_counts.npy' % data_dir, cat_counts)
+np.save('%s/cats.npy' % data_dir, cats)
