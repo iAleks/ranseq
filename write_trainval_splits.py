@@ -17,8 +17,8 @@ nCats = 46
 e_ids = os.listdir(image_dir)
 nExperiments = len(e_ids)
 
-nVersions = 10
-max_per_cat = 100
+nVersions = 3
+max_per_cat = 300
 for v in range(nVersions):
     cat_examples = [[] for _ in range(nCats)]
     train_eids = np.load('%s/e_ids_train_%d.npy' % (data_dir, v))
