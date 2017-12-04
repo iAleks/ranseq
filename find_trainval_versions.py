@@ -45,7 +45,7 @@ while version < 10:
         print e_ids_train
         exists = 0
         for v in range(version):
-            otherv = np.load('e_ids_train_%d.npy' % v)
+            otherv = np.load('%s/e_ids_train_%d.npy' % (data_dir, v))
             eq = otherv==e_ids_train
             if np.sum(eq)==len(eq):
                 exists = 1
