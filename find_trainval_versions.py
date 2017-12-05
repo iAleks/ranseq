@@ -19,8 +19,9 @@ version = 0
 print 'searching for version %d' % version
 while version < 5:
     random.shuffle(e_ids)
-    e_ids_train = e_ids[:int(np.floor(nExperiments*0.5))]
-    e_ids_val = e_ids[int(np.floor(nExperiments*0.5)):]
+    proportion = 0.9
+    e_ids_train = e_ids[:int(np.floor(nExperiments*proportion))]
+    e_ids_val = e_ids[int(np.floor(nExperiments*proportion)):]
     e_ids_train.sort()
     e_ids_val.sort()
     # print e_ids_train
@@ -54,7 +55,7 @@ while version < 5:
     cat_cover_both = np.sum((cat_coverage_v>0) == (cat_coverage_t>0))
     # print ((cat_coverage_t>0).astype(int) - (cat_coverage_v>0).astype(int))
     # if np.float32(cat_cover_t)/nCats > 0.68 and np.float32(cat_cover_v)/nCats > 0.68:
-    if np.float32(cat_cover_both)/nCats > 0.4: 
+    if cat_cover_t==nCats and np.float32(cat_cover_both)/nCats > 0.2:
         print 'got a valid version!'
         print 'this covers %d/%d cats in train (%.2f), and %d/%d cats in val (%.2f), and %d/%d cats in both (%.2f)' % (
             cat_cover_t, nCats, np.float32(cat_cover_t)/nCats,
