@@ -15,9 +15,9 @@ do_batch_balance = True
 
 #----------- augs -----------#
 do_log = True
+mult_noise_std = 10.0
+add_noise_std = 1.0
 do_normalize = False
-mult_noise_std = 5.0
-add_noise_std = 0.1
 
 #----------- net design -----------#
 do_train = False
@@ -64,6 +64,8 @@ log_freq_v = 100
 snap_freq = 1000
 
 max_iters = 10000
+aug_train = True
+aug_val = False
 shuffle_train = True
 shuffle_val = True
 

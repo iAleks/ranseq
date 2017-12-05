@@ -14,10 +14,12 @@ def get_inputs(model):
         (model.gene_t,
          model.cat_t) = batcher.batch(hyp.dataset_t,
                                       hyp.B,
+                                      aug=hyp.aug_train,
                                       shuffle=hyp.shuffle_train)
         (model.gene_v,
          model.cat_v) = batcher.batch(hyp.dataset_v,
                                       hyp.B,
+                                      aug=hyp.aug_val,
                                       shuffle=hyp.shuffle_val)
     else:
         genes = []
@@ -36,6 +38,7 @@ def get_inputs(model):
         for g in range(hyp.nCats):
             (gene, cat) = batcher.batch('%s_%d.txt' % (hyp.dataset_t[:-4], g),
                                         hyp.B,
+                                        aug=hyp.aug_train,
                                         shuffle=hyp.shuffle_train)
             genes.append(gene)
             cats.append(cat)
@@ -51,6 +54,7 @@ def get_inputs(model):
             (gene, cat) = batcher.batch('%s_%d.txt' % (hyp.dataset_v[:-4], g),
                                         hyp.B,
                                         catid=g,
+                                        aug=hyp.aug_val,
                                         shuffle=hyp.shuffle_val)
             genes.append(gene)
             cats.append(cat)

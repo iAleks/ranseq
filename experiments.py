@@ -17,8 +17,8 @@ exps = {}
 
 exps['try'] = ['train_gene',
                'fold1',
-               '4k_iters',
-               'lr5',
+               '10k_iters',
+               'lr4',
                'B4',
                'resume',
                'fast_logging']
@@ -60,7 +60,9 @@ groups['B64'] = ['B = 64']
 groups['B128'] = ['B = 128']
 groups['lr3'] = ['lr = 1e-3']
 groups['lr4'] = ['lr = 1e-4']
+groups['lr45'] = ['lr = 5e-4']
 groups['lr5'] = ['lr = 1e-5']
+groups['lr55'] = ['lr = 5e-5']
 groups['lr6'] = ['lr = 1e-6']
 groups['lr7'] = ['lr = 1e-7']
 groups['lr8'] = ['lr = 1e-8']
