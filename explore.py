@@ -49,7 +49,8 @@ for ind in range(1,nGenes): # start at 1 to skip header
     gene = np.pad(gene, (0, N-G), 'constant')
     gene = np.reshape(gene, [n, n])
     
-    imsave('%04d.png' % ind, gene)
+    # imsave('%04d.png' % ind, gene)
+    raw_input()
     # hist, bin_edges = np.histogram(gene, density=True)
     # print hist
     # print bin_edges
