@@ -10,16 +10,17 @@ import pretrained_nets as pret
 ############## choose an experiment ##############
 
 current = 'try'
-mod = '"o1k"'
+mod = '"fBN"'
 
 ############## set up experiments ##############
 exps = {}
 
 exps['try'] = ['train_gene',
-               'fold0',
-               '5k_iters',
-               'lr4',
-               'B64',
+               'fold1',
+               '4k_iters',
+               'lr5',
+               'B4',
+               'resume',
                'fast_logging']
                            
 ############## set up groups ##############
@@ -50,6 +51,7 @@ groups['debug'] = ['do_debug = True']
 groups['profile'] = ['do_profile = True']
 groups['B1'] = ['B = 1']
 groups['B2'] = ['B = 2']
+groups['B3'] = ['B = 3']
 groups['B4'] = ['B = 4']
 groups['B8'] = ['B = 8']
 groups['B16'] = ['B = 16']
@@ -70,6 +72,9 @@ groups['50_iters'] = ['max_iters = 50']
 groups['100_iters'] = ['max_iters = 100']
 groups['500_iters'] = ['max_iters = 500']
 groups['1k_iters'] = ['max_iters = 1000']
+groups['2k_iters'] = ['max_iters = 2000']
+groups['3k_iters'] = ['max_iters = 3000']
+groups['4k_iters'] = ['max_iters = 4000']
 groups['5k_iters'] = ['max_iters = 5000']
 groups['10k_iters'] = ['max_iters = 10000']
 groups['20k_iters'] = ['max_iters = 20000']

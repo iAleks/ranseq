@@ -8,20 +8,16 @@ dataset_name = 'tv'
 trainset = 'train'
 valset = 'val'
 B = 32 # batch size
-H = 160 # height
-W = 160 # width
 N = 20499 # gene profile length
 nCats = 46
 
+do_batch_balance = True
+
 #----------- augs -----------#
-do_photo_aug = False
 do_log = True
 do_normalize = False
-add_noise_std = 0.0
-# mult_noise_min = 0.8
-# mult_noise_max = 1.2
-mult_noise_min = 1.0
-mult_noise_max = 1.0
+mult_noise_std = 5.0
+add_noise_std = 0.1
 
 #----------- net design -----------#
 do_train = False
@@ -55,7 +51,8 @@ mod = "a"
 
 ############ slower-to-change hyperparams below here ############
 
-queue_capacity = 100+3*B
+# queue_capacity = 100+3*B
+queue_capacity = 100+2*B
 
 pad = "SYMMETRIC"
 
@@ -80,8 +77,8 @@ execfile('experiments.py')
 
 ############ make some final adjustments ############
 
-dataset_t = "%s/%s%d.txt" % (dataset_list_dir, trainset, fold)
-dataset_v = "%s/%s%d.txt" % (dataset_list_dir, valset, fold)
+dataset_t = "%s/%s_%d.txt" % (dataset_list_dir, trainset, fold)
+dataset_v = "%s/%s_%d.txt" % (dataset_list_dir, valset, fold)
 
 # if we're testing, turn on/off the modules asked for in the model name
 if not do_train:
@@ -89,19 +86,20 @@ if not do_train:
 
 ############ autogen a name; don't touch any hypers! ############
 
-def strnum(x):
-    return "{0}".format(str(round(x, 1) if x % 1 else int(x)))
-
-name = "%02dx%dx%d_%.1e" % (B, H, W, lr)
+if do_batch_balance:
+    name = "%02dbb_%.1e" % (B*nCats, lr)
+else:
+    name = "%02d_%.1e" % (B, lr)
 
 if do_gene:
-    name += "_G%d" % nLayers_gene
+    # name += "_G%d" % nLayers_gene
+    # name += "_G%d" % nLayers_gene
     if do_log:
         name += "_log"
     if not add_noise_std==0.0:
         name += "_an%.2f" % add_noise_std
-    if not mult_noise_min==mult_noise_max:
-        name += "_mn%.1f_%.1f" % (mult_noise_min, mult_noise_max)
+    if not mult_noise_std==0.0:
+        name += "_mn%.2f" % mult_noise_std
     if do_normalize:
         name += "_norm"
         
@@ -126,8 +124,6 @@ if trainset:
 if trainset==valset:
     # only val!
     name += "_ov"
-if do_photo_aug:
-    name += "_p"
         
 if do_debug:
     name += "_debug"
@@ -139,7 +135,7 @@ if do_resume:
     total_init = name
 
 # if we're testing, forget the crazy name, just call it init_mod
-if not do_train:
-    name = "TEST_%s_%dx%d_%s_%s_%s" % (total_init, H, W, dataset_name, valset, mod)
+# if not do_train:
+#     name = "TEST_%s_%dx%d_%s_%s_%s" % (total_init, H, W, dataset_name, valset, mod)
 
 print name
