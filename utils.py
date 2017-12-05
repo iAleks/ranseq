@@ -12,9 +12,6 @@ import hyperparams as hyp
 # from sklearn.manifold import TSNE
 
 EPS = 1e-6
-B = hyp.B
-H = hyp.H
-W = hyp.W
 
 def stop_execution(t, msg = ''):
     def f(t):
@@ -83,17 +80,13 @@ def add_loss(loss_dict, loss, coeff, name):
     loss_dict.update({'%s' % name: coeff*loss})
     return loss_dict
     
-def batch_confusion(cat, pred_cat, N):
+def batch_confusion(cat, pred_cat):
     cat = tf.expand_dims(cat, axis=1)
     pred_cat = tf.expand_dims(pred_cat, axis=1)
-    N = tf.tile(tf.reshape(N, [1, 1]), [hyp.B, 1])
-    return tf.map_fn(single_confusion, (cat, pred_cat, N), dtype=tf.int32)
+    return tf.map_fn(single_confusion, (cat, pred_cat), dtype=tf.int32)
 
-def single_confusion((cat, pred_cat, N)):
-    print_shape(cat)
-    print_shape(pred_cat)
-    print_shape(N)
-    conf = tf.confusion_matrix(cat, pred_cat, num_classes=tf.squeeze(N))
+def single_confusion((cat, pred_cat)):
+    conf = tf.confusion_matrix(cat, pred_cat, num_classes=hyp.nCats)
     conf = tf.squeeze(conf)
     return conf
     

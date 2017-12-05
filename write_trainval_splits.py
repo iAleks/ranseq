@@ -17,8 +17,8 @@ nCats = 46
 e_ids = os.listdir(image_dir)
 nExperiments = len(e_ids)
 
-nVersions = 3
-max_per_cat = 300
+nVersions = 5
+max_per_cat = 100000
 for v in range(nVersions):
     cat_examples = [[] for _ in range(nCats)]
     train_eids = np.load('%s/e_ids_train_%d.npy' % (data_dir, v))
@@ -31,15 +31,18 @@ for v in range(nVersions):
             pieces = ex.split('_')
             cat = int(pieces[1])
             cat_examples[cat].append(ex)
-    f = open("%s/train%d.txt" % (data_dir, v), "w")
+    f0 = open("%s/train_%d.txt" % (data_dir, v), "w")
     for c in range(nCats):
+        f = open("%s/train_%d_%d.txt" % (data_dir, v, c), "w")
         examples = cat_examples[c]
         random.shuffle(examples)
         for e in range(np.amin([max_per_cat, len(examples)])):
             s = examples[e]
             s = s[len(tfr_dir)+1:]
             f.write('%s\n' % s)
-    f.close()
+            f0.write('%s\n' % s)
+        f.close()
+    f0.close()
     
     val_eids = np.load('%s/e_ids_val_%d.npy' % (data_dir, v))
     print val_eids
@@ -51,15 +54,18 @@ for v in range(nVersions):
             pieces = ex.split('_')
             cat = int(pieces[1])
             cat_examples[cat].append(ex)
-    f = open("%s/val%d.txt" % (data_dir, v), "w")
+    f0 = open("%s/val_%d.txt" % (data_dir, v), "w")
     for c in range(nCats):
+        f = open("%s/val_%d_%d.txt" % (data_dir, v, c), "w")
         examples = cat_examples[c]
         random.shuffle(examples)
         for e in range(np.amin([max_per_cat, len(examples)])):
             s = examples[e]
             s = s[len(tfr_dir)+1:]
             f.write('%s\n' % s)
-    f.close()
+            f0.write('%s\n' % s)
+        f.close()
+    f0.close()
     print 'done version %d' % v
     print '-'*100
     # raw_input()

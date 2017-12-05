@@ -26,15 +26,18 @@ def GeneNet(gene, cat, is_train=True, reuse=False):
                        reuse=reuse)
         print_shape(pred)
         print_shape(cat)
+        # cat is [nCats]
         
+        inds = tf.where(cat > -1)
+        cat = tf.squeeze(tf.gather(cat, inds))
+        pred = tf.squeeze(tf.gather(pred, inds))
         
         label = tf.one_hot(cat,hyp.nCats,axis=1)
+        # print_shape(label)
         # cat = tf.Print(cat, [cat], 'cat', summarize=100)
         # pred = tf.Print(pred, [pred], 'pred', summarize=100)
         # label = tf.Print(label, [label], 'label', summarize=100)
 
-
-        print_shape(label)
 
         ce = tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=label)
         # ce = tf.Print(ce, [ce], 'ce', summarize=100)
@@ -47,12 +50,12 @@ def GeneNet(gene, cat, is_train=True, reuse=False):
         # pred is B x hyp.nCats
         pred_cat = tf.cast(tf.argmax(pred,axis=1), tf.int64)
         # pred_class is B
-        print_shape(pred_cat)
+        # print_shape(pred_cat)
         correct = tf.equal(pred_cat, cat)
         accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))
         tf.summary.scalar('accuracy', accuracy)
 
-        cm = batch_confusion(cat, pred_cat, hyp.nCats)
+        cm = batch_confusion(cat, pred_cat)
         cm = tf.reduce_mean(tf.cast(cm, tf.float32), axis=0)
         cm = tf.reshape(cm, [1, hyp.nCats, hyp.nCats, 1])
         cm = oned2color(cm)

@@ -8,7 +8,11 @@ def encoder(inputs, pred_dim, name, nLayers, relu=False, std=1e-4, do_decode=Tru
         if reuse:
             tf.get_variable_scope().reuse_variables()
         shape = inputs.get_shape()
-        B = int(shape[0])
+        if hyp.do_batch_balance:
+            B = hyp.nCats*hyp.B
+        else:
+            # B = int(shape[0])
+            B = hyp.B
         # H = int(shape[1])
         # W = int(shape[2])
         
@@ -46,17 +50,20 @@ def encoder(inputs, pred_dim, name, nLayers, relu=False, std=1e-4, do_decode=Tru
         #         W = int(W/2)
         # # add a fully-connected layer
         with slim.arg_scope([slim.fully_connected],
+                            normalizer_fn=slim.batch_norm,
                             activation_fn=tf.nn.relu,
                             weights_initializer=tf.truncated_normal_initializer(stddev=0.01),
                             weights_regularizer=slim.l2_regularizer(0.05)):
             # if is_train and hyp.do_dropout:
             #     net = slim.dropout(net, 0.5)
-            # net = tf.nn.relu(slim.fully_connected(tf.reshape(net, [hyp.B,-1]), 100))
+            # net = tf.nn.relu(slim.fully_connected(tf.reshape(net, [B,-1]), 100))
             net = inputs
             print_shape(net)
             if is_train and hyp.do_dropout_input:
                 net = slim.dropout(net, 0.5)
-            net = slim.fully_connected(tf.reshape(net, [hyp.B,-1]), 100)
+            net = tf.reshape(net, [B,-1])
+            print_shape(net)
+            net = slim.fully_connected(net, 100)
             print_shape(net)
             if is_train and hyp.do_dropout:
                 net = slim.dropout(net, 0.5)
