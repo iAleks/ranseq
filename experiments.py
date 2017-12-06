@@ -10,16 +10,16 @@ import pretrained_nets as pret
 ############## choose an experiment ##############
 
 current = 'try'
-mod = '"fBN"'
+mod = '"mean1_relu1_fBN"'
 
 ############## set up experiments ##############
 exps = {}
 
 exps['try'] = ['train_gene',
                'fold1',
-               '10k_iters',
-               'lr4',
-               'B4',
+               '5k_iters',
+               'lr5',
+               'B184',
                'resume',
                'fast_logging']
                            
@@ -58,6 +58,7 @@ groups['B16'] = ['B = 16']
 groups['B32'] = ['B = 32']
 groups['B64'] = ['B = 64']
 groups['B128'] = ['B = 128']
+groups['B184'] = ['B = 184']
 groups['lr3'] = ['lr = 1e-3']
 groups['lr4'] = ['lr = 1e-4']
 groups['lr45'] = ['lr = 5e-4']
