@@ -34,17 +34,30 @@ for ind in range(1,nGenes): # start at 1 to skip header
     print label
     print '-'*100
     print 'gene %d; type %s' % (ind, label)
-    print np.amax(gene)
-    print np.mean(gene)
-    print np.median(gene)
+    print 'min, max' 
     print np.amin(gene)
+    print np.amax(gene)
+    print 'mean'
+    print np.mean(gene[gene>0])
+    print np.mean(gene)
+    print 'median'
+    print np.median(gene[gene>0])
+    print np.median(gene)
+    print 'std'
+    print np.std(gene[gene>0])
+    print np.std(gene)
+    print np.sum(gene==0)
     
-    gene = gene + 1
-    gene = np.log(gene)
-    print np.amax(gene)
-    print np.mean(gene)
-    print np.median(gene)
+    gene = np.log(1+gene)
+    print 'after log(1+x)'
     print np.amin(gene)
+    print np.amax(gene)
+    print np.mean(gene[gene>0])
+    print np.median(gene[gene>0])
+    print np.std(gene[gene>0])
+    # print np.mean(gene)
+    # print np.median(gene)
+    # print np.std(gene)
 
     gene = np.pad(gene, (0, N-G), 'constant')
     gene = np.reshape(gene, [n, n])
