@@ -27,41 +27,24 @@ def get_inputs(model):
         for g in range(hyp.nCats):
             (gene, cat) = batcher.batch('%s_%d.txt' % (hyp.dataset_t[:-4], g),
                                         hyp.B,
-                                        shuffle=hyp.shuffle_train)
-            genes.append(gene)
-            cats.append(cat)
-        model.gene_t = tf.concat([genes], axis=0)
-        model.cat_t = tf.concat([cats], axis=0)
-
-        genes = []
-        cats = []
-        for g in range(hyp.nCats):
-            (gene, cat) = batcher.batch('%s_%d.txt' % (hyp.dataset_t[:-4], g),
-                                        hyp.B,
                                         aug=hyp.aug_train,
                                         shuffle=hyp.shuffle_train)
             genes.append(gene)
             cats.append(cat)
-        print_shape(genes[0])
         model.gene_t = tf.concat(genes, axis=0)
-        print_shape(model.gene_t)
         model.cat_t = tf.concat(cats, axis=0)
-        print_shape(model.cat_t)
 
         genes = []
         cats = []
         for g in range(hyp.nCats):
             (gene, cat) = batcher.batch('%s_%d.txt' % (hyp.dataset_v[:-4], g),
                                         hyp.B,
-                                        catid=g,
                                         aug=hyp.aug_val,
                                         shuffle=hyp.shuffle_val)
             genes.append(gene)
             cats.append(cat)
         model.gene_v = tf.concat(genes, axis=0)
         model.cat_v = tf.concat(cats, axis=0)
-        # model.gene_v = tf.concat([gene for gene in genes], axis=0)
-        # model.cat_v = tf.concat([cat for cat in cats], axis=0)
     
     model.train_inputs = [
         model.gene_t,

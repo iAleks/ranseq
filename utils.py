@@ -1,4 +1,5 @@
 import tensorflow as tf
+import os
 import math
 import numpy as np 
 import hyperparams as hyp
@@ -74,19 +75,27 @@ def match(xs, ys): #sort of like a nested zip
 def feed_from(inputs, variables, sess):
     return match(variables, sess.run(inputs))
 
-def add_loss(loss_dict, loss, coeff, name):
-    tf.summary.scalar('unscaled_%s' % name, loss)
-    tf.summary.scalar('scaled_%s' % name, coeff*loss)
-    loss_dict.update({'%s' % name: coeff*loss})
+def add_loss(loss_dict, loss, name):
+    tf.summary.scalar('%s' % name, loss)
+    loss_dict.update({'%s' % name: loss})
     return loss_dict
     
 def batch_confusion(cat, pred_cat):
+    print_shape(cat)
+    print_shape(pred_cat)
     cat = tf.expand_dims(cat, axis=1)
     pred_cat = tf.expand_dims(pred_cat, axis=1)
+    print_shape(cat)
+    print_shape(pred_cat)
     return tf.map_fn(single_confusion, (cat, pred_cat), dtype=tf.int32)
 
 def single_confusion((cat, pred_cat)):
+    print_shape(cat)
+    print_shape(pred_cat)
     conf = tf.confusion_matrix(cat, pred_cat, num_classes=hyp.nCats)
     conf = tf.squeeze(conf)
     return conf
     
+def mkdir(d):
+    if not os.path.exists(d):
+        os.makedirs(d)

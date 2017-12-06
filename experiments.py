@@ -9,31 +9,49 @@ import pretrained_nets as pret
 
 ############## choose an experiment ##############
 
-current = 'try'
-mod = '"mean1_relu1_fBN"'
+# current = 'train'
+# mod = '"reg005_nobn_onerelu"'
+# current = 'finaltrain'
+# mod = '"x"'
+current = 'test'
+mod = '"x"'
 
 ############## set up experiments ##############
 exps = {}
 
-exps['try'] = ['train_gene',
-               'fold1',
-               '5k_iters',
-               'lr5',
-               'B184',
-               'resume',
-               'fast_logging']
+exps['train'] = ['train',
+                 'fold1',
+                 '5k_iters',
+                 'drop',
+                 'dropi',
+                 'lr4',
+                 'B4',
+                 'resume',
+                 'fast_logging']
+exps['finaltrain'] = ['train',
+                      'fold99',
+                      '4k_iters',
+                      'drop',
+                      'dropi',
+                      'lr4',
+                      'B4',
+                      'onlyval',
+                      'resume',
+                      'fast_logging']
                            
+exps['test'] = ['total_init',
+                'testset',
+                'B1',
+                'never_logging']
+# 'noshuf',
+
 ############## set up groups ##############
 groups = {}
 
 groups['train'] = ['do_train = True']
-groups['photo_aug'] = ['do_photo_aug = True']
 groups['noshuf'] = ['shuffle_train = False',
                     'shuffle_val = False']
-groups['train_gene'] = ['do_train = True',
-                        'do_gene = True',
-                        'do_train_gene = True',
-                        'nLayers_gene = 5']
+groups['train'] = ['do_train = True']
 groups['dropi'] = ['do_dropout_input = True']
 groups['drop'] = ['do_dropout = True']
 groups['fold0'] = ['fold = 0']
@@ -47,6 +65,7 @@ groups['fold7'] = ['fold = 7']
 groups['fold8'] = ['fold = 8']
 groups['fold9'] = ['fold = 9']
 groups['fold99'] = ['fold = 99']
+groups['testset'] = ['testset = True']
 groups['debug'] = ['do_debug = True']
 groups['profile'] = ['do_profile = True']
 groups['B1'] = ['B = 1']
@@ -73,6 +92,7 @@ groups['5_iters'] = ['max_iters = 5']
 groups['10_iters'] = ['max_iters = 10']
 groups['50_iters'] = ['max_iters = 50']
 groups['100_iters'] = ['max_iters = 100']
+groups['200_iters'] = ['max_iters = 200']
 groups['500_iters'] = ['max_iters = 500']
 groups['1k_iters'] = ['max_iters = 1000']
 groups['2k_iters'] = ['max_iters = 2000']
@@ -90,13 +110,19 @@ groups['500k_iters'] = ['max_iters = 500000']
 groups['resume'] = ['do_resume = True']
 
 groups['onlyval'] = ['trainset = valset']
+groups['onlytrain'] = ['valset = trainset']
 
+groups['fastest_logging'] = ['log_freq_t = 1',
+                             'log_freq_v = 1']
 groups['faster_logging'] = ['log_freq_t = 10',
                             'log_freq_v = 10']
 groups['fast_logging'] = ['log_freq_t = 10',
                           'log_freq_v = 10']
 groups['slow_logging'] = ['log_freq_t = 100',
                           'log_freq_v = 100']
+groups['never_logging'] = ['log_freq_t = 1000000000',
+                           'log_freq_v = 1000000000']
+groups['total_init'] = ['total_init = "' + pret.init + '"']
 
 ############## verify and execute ##############
 

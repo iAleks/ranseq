@@ -9,7 +9,7 @@ from readers import *
 # sys.path.append('../writers_readers')
 # from read_svkitti_tfrecords import *
 
-def batch(dataset,B,catid=0,aug=True,shuffle=True):
+def batch(dataset,B,aug=True,shuffle=True):
     print dataset
     with open(dataset) as f:
         content = f.readlines()
@@ -18,7 +18,6 @@ def batch(dataset,B,catid=0,aug=True,shuffle=True):
     print 'found %d records' % nRecords
     if nRecords == 0:
         gene = tf.zeros([hyp.N, 1], tf.float32)
-        # cat = catid*tf.ones([], tf.int64)
         cat = -1*tf.ones([], tf.int64)
     else:        
         for record in records:
@@ -34,13 +33,11 @@ def batch(dataset,B,catid=0,aug=True,shuffle=True):
         if aug:
             if not hyp.mult_noise_std==0:
                 mult = tf.random_normal([hyp.N,1],1,hyp.mult_noise_std)
-                # gene = gene*tf.abs(mult)
                 gene = gene*mult
             if not hyp.add_noise_std==0:
                 noise = tf.random_normal([hyp.N,1],0,hyp.add_noise_std)
-                # gene = gene + tf.abs(noise)
                 gene = gene + noise
         if hyp.do_normalize:
-            gene = normalize(gene)-0.5
+            gene = normalize(gene)
     batch = tf.train.batch([gene,cat],batch_size=B)
     return batch
